@@ -1,19 +1,21 @@
-const express = require('express');
-const cors = require('cors');
-const { uuid } = require('uuidv4');
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import { uuid } from 'uuidv4';
+
+import IRepository from './interfaces/IRepository';
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-const repositories = [];
+const repositories: IRepository[] = [];
 
-app.get('/repositories', (req, res) => {
+app.get('/repositories', (req: Request, res: Response) => {
   return res.status(200).json(repositories);
 });
 
-app.post('/repositories', (req, res) => {
+app.post('/repositories', (req: Request, res: Response) => {
   const { title, url, techs } = req.body;
   const id = uuid();
   const repository = {
@@ -29,7 +31,7 @@ app.post('/repositories', (req, res) => {
   return res.status(201).json(repository);
 });
 
-app.put('/repositories/:id', (req, res) => {
+app.put('/repositories/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, url, techs, likes } = req.body;
 
@@ -52,7 +54,7 @@ app.put('/repositories/:id', (req, res) => {
   return res.status(200).json(respository);
 });
 
-app.delete('/repositories/:id', (req, res) => {
+app.delete('/repositories/:id', (req: Request, res: Response) => {
   const { id } = req.params;
 
   const index = repositories.findIndex((repository) => repository.id === id);
@@ -66,7 +68,7 @@ app.delete('/repositories/:id', (req, res) => {
   return res.status(204).send();
 });
 
-app.post('/repositories/:id/like', (req, res) => {
+app.post('/repositories/:id/like', (req: Request, res: Response) => {
   const { id } = req.params;
 
   const repository = repositories.find((repository) => repository.id === id);
@@ -80,4 +82,4 @@ app.post('/repositories/:id/like', (req, res) => {
   return res.status(200).json(repository);
 });
 
-module.exports = app;
+export default app;
