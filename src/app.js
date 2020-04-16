@@ -31,21 +31,21 @@ app.post('/repositories', (req, res) => {
 
 app.put('/repositories/:id', (req, res) => {
   const { id } = req.params;
-  const { title, url, techs, likes } = req.body;
-
-  const respository = {
-    id,
-    title,
-    url,
-    techs,
-    likes,
-  };
+  const { title, url, techs } = req.body;
 
   const index = repositories.findIndex((repository) => repository.id === id);
 
   if (index < 0) {
     return res.status(400).json({ error: 'Repository not found!😢' });
   }
+
+  const respository = {
+    id,
+    title,
+    url,
+    techs,
+    likes : repositories[index].likes,
+  };
 
   repositories[index] = respository;
 
